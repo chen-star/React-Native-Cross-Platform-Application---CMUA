@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>CMUA MAP</title>
+    <meta charset="utf-8">
+    <style type="text/css" rel="stylesheet">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        top: 43px;
+        height: 97%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      #floating-panel {
+        position: absolute;
+        top: 50px;
+        left: 31%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 6px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      html,body{margin:0;padding:0;width:100%;height:97%;}
+      img,canvas{-webkit-touch-callout:none;}
+    </style>
+    </head>
+ <body>
+    <div id="floating-panel">
+    Start:
+    <select id="start">
+      <option value="-34.928103, 138.601293">CMUA</option>
+      <option value="-34.929501, 138.597269">Central Market</option>
+      <option value="-34.922658, 138.601857">Rundle Mall</option>
+      <option value="-34.920441, 138.603960">Art Gallery of South Australia</option>
+      <option value="-34.928917, 138.595554">China Town</option>
+      <option value="-34.920351, 138.597276">Adelaide Casino</option>
+      <option value="-34.912633, 138.606858">Adelaide Zoo</option>
+      <option value="-34.923031, 138.602856">Coles</option>
+      <option value="-34.922424, 138.602641">Woolworths Rundle Mall</option>
+      <option value="-34.922389, 138.600785">The Myer Centre</option>
+      <option value="-34.922534, 138.605736">Target Centrepoint</option>
+      <option value="-34.922019, 138.609378">Palace Nova Eastend Cinemas</option>
+    </select>
+    <br/>
+    End:
+    <select id="end">
+      <option value="-34.928103, 138.601293">CMUA</option>
+      <option value="-34.929501, 138.597269">Central Market</option>
+      <option value="-34.922658, 138.601857">Rundle Mall</option>
+      <option value="-34.920441, 138.603960">Art Gallery of South Australia</option>
+      <option value="-34.928917, 138.595554">China Town</option>
+      <option value="-34.920351, 138.597276">Adelaide Casino</option>
+      <option value="-34.912633, 138.606858">Adelaide Zoo</option>
+      <option value="-34.923031, 138.602856">Coles</option>
+      <option value="-34.922424, 138.602641">Woolworths Rundle Mall</option>
+      <option value="-34.922389, 138.600785">The Myer Centre</option>
+      <option value="-34.922534, 138.605736">Target Centrepoint</option>
+      <option value="-34.922019, 138.609378">Palace Nova Eastend Cinemas</option>
+    </select>
+    </div>
+
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var locurl = {lat: -34.928103, lng: 138.601293};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: locurl
+        });
+        new google.maps.Marker({
+            position: locurl,
+            map: map
+        });
+        directionsDisplay.setMap(map);
+
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+          new google.maps.Marker({
+            position: document.getElementById('start').value,
+            map: map
+          });
+          new google.maps.Marker({
+            position: document.getElementById('end').value,
+            map:map
+          });
+        };
+        document.getElementById('start').addEventListener('change', onChangeHandler);
+        document.getElementById('end').addEventListener('change', onChangeHandler);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+          origin: document.getElementById('start').value,
+          destination: document.getElementById('end').value,
+          travelMode: 'WALKING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCChXN6E3mbn1mMd0HsblRKVDugBVSRj40&&callback=initMap"></script>
+  </body>
+</html>
+
+
